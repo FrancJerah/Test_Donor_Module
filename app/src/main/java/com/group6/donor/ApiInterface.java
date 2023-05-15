@@ -13,6 +13,8 @@ import retrofit2.http.POST;
 
 public interface ApiInterface {
 
+    // Donor Fields
+
     @POST("get_donors.php")
     Call<List<DonorsClass>> getDonors();
 
@@ -54,5 +56,39 @@ public interface ApiInterface {
             @Field("key") String key,
             @Field("DonorID") int DonorID,
             @Field("love") boolean love);
+
+    // Inventory Fields
+
+    @POST("get_inventory.php")
+    Call<List<InventoryClass>> getInventory();
+
+    @FormUrlEncoded
+    @POST("add_inventory.php")
+    Call<InventoryClass> insertInventory(
+            @Field("key") String key,
+            @Field("ItemName") String ItemName,
+            @Field("Quantity") String Quantity,
+            @Field("Description") String Description,
+            @Field("Expiration") String Expiration,
+            @Field("picture") String picture);
+
+    @FormUrlEncoded
+    @POST("update_inventory.php")
+    Call<InventoryClass> updateInventory(
+            @Field("key") String key,
+            @Field("ItemID") int ItemID,
+            @Field("ItemName") String ItemName,
+            @Field("Quantity") String Quantity,
+            @Field("Description") String Description,
+            @Field("Expiration") String Expiration,
+            @Field("picture") String picture);
+
+    @FormUrlEncoded
+    @POST("delete_inventory.php")
+    Call<InventoryClass> deleteInventory(
+            @Field("key") String key,
+            @Field("ItemID") int ItemID,
+            @Field("picture") String picture);
+
 
 }
