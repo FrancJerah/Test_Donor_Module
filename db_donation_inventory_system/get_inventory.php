@@ -19,8 +19,7 @@ while( $row = mysqli_fetch_assoc($result) ){
         'Quantity'   =>$row['Quantity'],
         'Description'   =>$row['Description'],
         'Expiration'     =>date('d M Y', strtotime($row['Expiration'])),
-        'picture'   =>"http://$server_name" . $row['picture'],
-    );
+        'picture'   =>"http://$server_name" . $row['picture']));
 }
 
 echo json_encode($response);
