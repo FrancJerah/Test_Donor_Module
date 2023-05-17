@@ -17,4 +17,13 @@
         <item>@string/gender_male</item>
         <item>@string/gender_female</item>
     </string-array>
+    <string-array name="array_status_options">
+        <item>"@string/status_approved"</item>
+        <item>@string/status_rejected</item>
+        <item>@string/status_in_progress</item>
+        <item>@string/status_distributed</item>
+        <item>@string/status_canceled</item>
+        <item>@string/status_pending</item>
+    </string-array>
+
 </resources>

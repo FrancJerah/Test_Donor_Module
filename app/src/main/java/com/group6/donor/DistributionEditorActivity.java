@@ -8,11 +8,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -43,22 +43,26 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DonorEditorActivity extends AppCompatActivity {
+public class DistributionEditorActivity extends AppCompatActivity {
 
-    private Spinner mGenderSpinner;
-    private EditText mName, mAddress, mContactNumber, mBirth, mEmail;
+    private Spinner mStatusSpinner;
+    private EditText mRecipient, mDistributionLocation, mQuantity, mDistributionDate, mNotes;
     private CircleImageView mPicture;
     private FloatingActionButton mFabChoosePic;
 
     Calendar myCalendar = Calendar.getInstance();
 
-    private int mGender = 0;
-    public static final int GENDER_UNKNOWN = 0;
-    public static final int GENDER_MALE = 1;
-    public static final int GENDER_FEMALE = 2;
+    private int mStatus = 0;
+    public static final int STATUS_PENDING = 0;
+    public static final int STATUS_APPROVED = 1;
+    public static final int STATUS_REJECTED = 2;
+    public static final int STATUS_IN_PROGRESS = 3;
+    public static final int STATUS_DISTRIBUTED = 4;
+    public static final int STATUS_COMPLETED = 5;
+    public static final int STATUS_CANCELED = 6;
 
-    private String name, Address, ContactNumber, picture, birth, Email;
-    private int DonorID, gender;
+    private String Recipient, DistributionLocation, Quantity, Notes, picture, DistributionDate;
+    private int DistributionID, Status;
 
     private Menu action;
     private Bitmap bitmap;
@@ -68,30 +72,30 @@ public class DonorEditorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_editor_donor);
+        setContentView(R.layout.activity_editor_distribution);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        mName = findViewById(R.id.name);
-        mAddress = findViewById(R.id.Address);
-        mContactNumber = findViewById(R.id.ContactNumber);
-        mBirth = findViewById(R.id.birth);
+        mRecipient = findViewById(R.id.Recipient);
+        mDistributionLocation = findViewById(R.id.DistributionLocation);
+        mQuantity = findViewById(R.id.Quantity);
+        mDistributionDate = findViewById(R.id.DistributionDate);
         mPicture = findViewById(R.id.picture);
         mFabChoosePic = findViewById(R.id.fabChoosePic);
-        mEmail = findViewById(R.id.Email);
+        mNotes = findViewById(R.id.Notes);
 
-        mGenderSpinner = findViewById(R.id.gender);
-        mBirth = findViewById(R.id.birth);
+        mStatusSpinner = findViewById(R.id.Status);
+        mDistributionDate = findViewById(R.id.DistributionDate);
 
-        mBirth.setFocusableInTouchMode(false);
-        mBirth.setFocusable(false);
-        mBirth.setOnClickListener(new View.OnClickListener() {
+        mDistributionDate.setFocusableInTouchMode(false);
+        mDistributionDate.setFocusable(false);
+        mDistributionDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(DonorEditorActivity.this, date, myCalendar
+                new DatePickerDialog(DistributionEditorActivity.this, date, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
@@ -107,14 +111,14 @@ public class DonorEditorActivity extends AppCompatActivity {
         setupSpinner();
 
         Intent intent = getIntent();
-        DonorID = intent.getIntExtra("DonorID", 0);
-        name = intent.getStringExtra("name");
-        Address = intent.getStringExtra("Address");
-        ContactNumber = intent.getStringExtra("ContactNumber");
-        birth = intent.getStringExtra("birth");
+        DistributionID = intent.getIntExtra("DistributionID", 0);
+        Recipient = intent.getStringExtra("Recipient");
+        DistributionLocation = intent.getStringExtra("DistributionLocation");
+        Quantity = intent.getStringExtra("Quantity");
+        DistributionDate = intent.getStringExtra("DistributionLocation");
         picture = intent.getStringExtra("picture");
-        Email = intent.getStringExtra("Email");
-        gender = intent.getIntExtra("gender", 0);
+        Notes = intent.getStringExtra("Notes");
+        Status = intent.getIntExtra("Status", 0);
 
         setDataFromIntentExtra();
 
@@ -122,16 +126,16 @@ public class DonorEditorActivity extends AppCompatActivity {
 
     private void setDataFromIntentExtra() {
 
-        if (DonorID != 0) {
+        if (DistributionID != 0) {
 
             readMode();
-            getSupportActionBar().setTitle("Edit " + name.toString());
+            getSupportActionBar().setTitle("Edit " + Recipient.toString());
 
-            mName.setText(name);
-            mAddress.setText(Address);
-            mContactNumber.setText(ContactNumber);
-            mEmail.setText(Email);
-            mBirth.setText(birth);
+            mRecipient.setText(Recipient);
+            mDistributionLocation.setText(DistributionLocation);
+            mQuantity.setText(Quantity);
+            mNotes.setText(Notes);
+            mDistributionDate.setText(DistributionDate);
 
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.skipMemoryCache(true);
@@ -139,20 +143,32 @@ public class DonorEditorActivity extends AppCompatActivity {
             requestOptions.placeholder(R.drawable.logo);
             requestOptions.error(R.drawable.logo);
 
-            Glide.with(DonorEditorActivity.this)
+            Glide.with(DistributionEditorActivity.this)
                     .load(picture)
                     .apply(requestOptions)
                     .into(mPicture);
 
-            switch (gender) {
-                case GENDER_MALE:
-                    mGenderSpinner.setSelection(1);
+            switch (Status) {
+                case STATUS_APPROVED:
+                    mStatusSpinner.setSelection(1);
                     break;
-                case GENDER_FEMALE:
-                    mGenderSpinner.setSelection(2);
+                case STATUS_REJECTED:
+                    mStatusSpinner.setSelection(2);
+                    break;
+                case STATUS_IN_PROGRESS:
+                    mStatusSpinner.setSelection(3);
+                    break;
+                case STATUS_DISTRIBUTED:
+                    mStatusSpinner.setSelection(4);
+                    break;
+                case STATUS_COMPLETED:
+                    mStatusSpinner.setSelection(5);
+                    break;
+                case STATUS_CANCELED:
+                    mStatusSpinner.setSelection(6);
                     break;
                 default:
-                    mGenderSpinner.setSelection(0);
+                    mStatusSpinner.setSelection(0);
                     break;
             }
 
@@ -162,28 +178,36 @@ public class DonorEditorActivity extends AppCompatActivity {
     }
 
     private void setupSpinner(){
-        ArrayAdapter genderSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.array_gender_options, android.R.layout.simple_spinner_item);
-        genderSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        mGenderSpinner.setAdapter(genderSpinnerAdapter);
+        ArrayAdapter statusSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.array_status_options, android.R.layout.simple_spinner_item);
+        statusSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        mStatusSpinner.setAdapter(statusSpinnerAdapter);
 
-        mGenderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mStatusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selection = (String) parent.getItemAtPosition(position);
                 if (!TextUtils.isEmpty(selection)) {
-                    if (selection.equals(getString(R.string.gender_male))) {
-                        mGender = GENDER_MALE;
-                    } else if (selection.equals(getString(R.string.gender_female))) {
-                        mGender = GENDER_FEMALE;
+                    if (selection.equals("Approved")) {
+                        mStatus = STATUS_APPROVED;
+                    } else if (selection.equals("Rejected")) {
+                        mStatus = STATUS_REJECTED;
+                    } else if (selection.equals("In Progress")) {
+                        mStatus = STATUS_IN_PROGRESS;
+                    } else if (selection.equals("Distributed")) {
+                        mStatus = STATUS_DISTRIBUTED;
+                    } else if (selection.equals("Completed")) {
+                        mStatus = STATUS_COMPLETED;
+                    } else if (selection.equals("Canceled")) {
+                        mStatus = STATUS_CANCELED;
                     } else {
-                        mGender = GENDER_UNKNOWN;
+                        mStatus = STATUS_PENDING;
                     }
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                mGender = 0;
+                mStatus = 0;
             }
         });
     }
@@ -195,7 +219,7 @@ public class DonorEditorActivity extends AppCompatActivity {
         action = menu;
         action.findItem(R.id.menu_save).setVisible(false);
 
-        if (DonorID == 0){
+        if (DistributionID == 0){
 
             action.findItem(R.id.menu_edit).setVisible(false);
             action.findItem(R.id.menu_delete).setVisible(false);
@@ -220,7 +244,7 @@ public class DonorEditorActivity extends AppCompatActivity {
                 editMode();
 
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(mName, InputMethodManager.SHOW_IMPLICIT);
+                imm.showSoftInput(mRecipient, InputMethodManager.SHOW_IMPLICIT);
 
                 action.findItem(R.id.menu_edit).setVisible(false);
                 action.findItem(R.id.menu_delete).setVisible(false);
@@ -230,13 +254,13 @@ public class DonorEditorActivity extends AppCompatActivity {
             case R.id.menu_save:
                 //Save
 
-                if (DonorID == 0) {
+                if (DistributionID == 0) {
 
-                    if (TextUtils.isEmpty(mName.getText().toString()) ||
-                            TextUtils.isEmpty(mAddress.getText().toString()) ||
-                            TextUtils.isEmpty(mContactNumber.getText().toString()) ||
-                            TextUtils.isEmpty(mEmail.getText().toString()) ||
-                            TextUtils.isEmpty(mBirth.getText().toString()) ){
+                    if (TextUtils.isEmpty(mRecipient.getText().toString()) ||
+                            TextUtils.isEmpty(mDistributionLocation.getText().toString()) ||
+                            TextUtils.isEmpty(mQuantity.getText().toString()) ||
+                            TextUtils.isEmpty(mNotes.getText().toString()) ||
+                            TextUtils.isEmpty(mDistributionDate.getText().toString()) ){
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
                         alertDialog.setMessage("Please complete the field!");
                         alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -261,7 +285,7 @@ public class DonorEditorActivity extends AppCompatActivity {
 
                 } else {
 
-                    updateData("update", DonorID);
+                    updateData("update", DistributionID);
                     action.findItem(R.id.menu_edit).setVisible(true);
                     action.findItem(R.id.menu_save).setVisible(false);
                     action.findItem(R.id.menu_delete).setVisible(true);
@@ -272,16 +296,16 @@ public class DonorEditorActivity extends AppCompatActivity {
                 return true;
             case R.id.menu_delete:
 
-                AlertDialog.Builder dialog = new AlertDialog.Builder(DonorEditorActivity.this);
-                dialog.setMessage("Delete this pet?");
+                AlertDialog.Builder dialog = new AlertDialog.Builder(DistributionEditorActivity.this);
+                dialog.setMessage("Delete this item?");
                 dialog.setPositiveButton("Yes" ,new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        deleteData("delete", DonorID, picture);
+                        deleteData("delete", DistributionID, picture);
                     }
                 });
-                dialog.setNegativeButton("Cencel", new DialogInterface.OnClickListener() {
+                dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -304,16 +328,16 @@ public class DonorEditorActivity extends AppCompatActivity {
             myCalendar.set(Calendar.YEAR, year);
             myCalendar.set(Calendar.MONTH, monthOfYear);
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            setBirth();
+            setDistributionDate();
         }
 
     };
 
-    private void setBirth() {
+    private void setDistributionDate() {
         String myFormat = "dd MMMM yyyy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
-        mBirth.setText(sdf.format(myCalendar.getTime()));
+        mDistributionDate.setText(sdf.format(myCalendar.getTime()));
     }
 
     public String getStringImage(Bitmap bmp){
@@ -357,12 +381,12 @@ public class DonorEditorActivity extends AppCompatActivity {
 
         readMode();
 
-        String name = mName.getText().toString().trim();
-        String Address = mAddress.getText().toString().trim();
-        String ContactNumber = mContactNumber.getText().toString().trim();
-        String Email = mEmail.getText().toString().trim();
-        int gender = mGender;
-        String birth = mBirth.getText().toString().trim();
+        String Recipient = mRecipient.getText().toString().trim();
+        String DistributionLocation = mDistributionLocation.getText().toString().trim();
+        String Quantity = mQuantity.getText().toString().trim();
+        String Notes = mNotes.getText().toString().trim();
+        int status = mStatus;
+        String DistributionDate = mDistributionDate.getText().toString().trim();
         String picture = null;
         if (bitmap == null) {
             picture = "";
@@ -372,15 +396,15 @@ public class DonorEditorActivity extends AppCompatActivity {
 
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
-        Call<DonorsClass> call = apiInterface.insertDonor(key, name, Address, ContactNumber, Email, gender, birth, picture);
+        Call<DistributionClass> call = apiInterface.insertDistribution(key, Recipient, DistributionLocation, Quantity, Notes, Status, DistributionDate, picture);
 
-        call.enqueue(new Callback<DonorsClass>() {
+        call.enqueue(new Callback<DistributionClass>() {
             @Override
-            public void onResponse(Call<DonorsClass> call, Response<DonorsClass> response) {
+            public void onResponse(Call<DistributionClass> call, Response<DistributionClass> response) {
 
                 progressDialog.dismiss();
 
-                Log.i(DonorEditorActivity.class.getSimpleName(), response.toString());
+                Log.i(DistributionEditorActivity.class.getSimpleName(), response.toString());
 
                 String value = response.body().getValue();
                 String message = response.body().getMassage();
@@ -388,15 +412,15 @@ public class DonorEditorActivity extends AppCompatActivity {
                 if (value.equals("1")){
                     finish();
                 } else {
-                    Toast.makeText(DonorEditorActivity.this, message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DistributionEditorActivity.this, message, Toast.LENGTH_SHORT).show();
                 }
 
             }
 
             @Override
-            public void onFailure(Call<DonorsClass> call, Throwable t) {
+            public void onFailure(Call<DistributionClass> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(DonorEditorActivity.this, t.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(DistributionEditorActivity.this, t.getMessage().toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -410,12 +434,12 @@ public class DonorEditorActivity extends AppCompatActivity {
 
         readMode();
 
-        String name = mName.getText().toString().trim();
-        String Address = mAddress.getText().toString().trim();
-        String ContactNumber = mContactNumber.getText().toString().trim();
-        String Email = mEmail.getText().toString().trim();
-        int gender = mGender;
-        String birth = mBirth.getText().toString().trim();
+        String Recipient = mRecipient.getText().toString().trim();
+        String DistributionLocation = mDistributionLocation.getText().toString().trim();
+        String Quantity = mQuantity.getText().toString().trim();
+        String Notes = mNotes.getText().toString().trim();
+        int status = mStatus;
+        String DistributionDate = mDistributionDate.getText().toString().trim();
         String picture = null;
         if (bitmap == null) {
             picture = "";
@@ -425,31 +449,31 @@ public class DonorEditorActivity extends AppCompatActivity {
 
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
-        Call<DonorsClass> call = apiInterface.updateDonor(key, id, name, Address, ContactNumber, Email, gender, birth, picture);
+        Call<DistributionClass> call = apiInterface.updateDistribution(key, id, Recipient, DistributionLocation, Quantity, Notes, Status, DistributionDate, picture);
 
-        call.enqueue(new Callback<DonorsClass>() {
+        call.enqueue(new Callback<DistributionClass>() {
             @Override
-            public void onResponse(Call<DonorsClass> call, Response<DonorsClass> response) {
+            public void onResponse(Call<DistributionClass> call, Response<DistributionClass> response) {
 
                 progressDialog.dismiss();
 
-                Log.i(DonorEditorActivity.class.getSimpleName(), response.toString());
+                Log.i(DistributionEditorActivity.class.getSimpleName(), response.toString());
 
                 String value = response.body().getValue();
                 String message = response.body().getMassage();
 
                 if (value.equals("1")){
-                    Toast.makeText(DonorEditorActivity.this, message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DistributionEditorActivity.this, message, Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(DonorEditorActivity.this, message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DistributionEditorActivity.this, message, Toast.LENGTH_SHORT).show();
                 }
 
             }
 
             @Override
-            public void onFailure(Call<DonorsClass> call, Throwable t) {
+            public void onFailure(Call<DistributionClass> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(DonorEditorActivity.this, t.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(DistributionEditorActivity.this, t.getMessage().toString(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -464,32 +488,32 @@ public class DonorEditorActivity extends AppCompatActivity {
 
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
-        Call<DonorsClass> call = apiInterface.deleteDonor(key, id, pic);
+        Call<DistributionClass> call = apiInterface.deleteDistribution(key, id, pic);
 
-        call.enqueue(new Callback<DonorsClass>() {
+        call.enqueue(new Callback<DistributionClass>() {
             @Override
-            public void onResponse(Call<DonorsClass> call, Response<DonorsClass> response) {
+            public void onResponse(Call<DistributionClass> call, Response<DistributionClass> response) {
 
                 progressDialog.dismiss();
 
-                Log.i(DonorEditorActivity.class.getSimpleName(), response.toString());
+                Log.i(DistributionEditorActivity.class.getSimpleName(), response.toString());
 
                 String value = response.body().getValue();
                 String message = response.body().getMassage();
 
                 if (value.equals("1")){
-                    Toast.makeText(DonorEditorActivity.this, message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DistributionEditorActivity.this, message, Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
-                    Toast.makeText(DonorEditorActivity.this, message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DistributionEditorActivity.this, message, Toast.LENGTH_SHORT).show();
                 }
 
             }
 
             @Override
-            public void onFailure(Call<DonorsClass> call, Throwable t) {
+            public void onFailure(Call<DistributionClass> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(DonorEditorActivity.this, t.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(DistributionEditorActivity.this, t.getMessage().toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -497,17 +521,17 @@ public class DonorEditorActivity extends AppCompatActivity {
 
     void readMode(){
 
-        mName.setFocusableInTouchMode(false);
-        mAddress.setFocusableInTouchMode(false);
-        mContactNumber.setFocusableInTouchMode(false);
-        mEmail.setFocusableInTouchMode(false);
-        mName.setFocusable(false);
-        mAddress.setFocusable(false);
-        mContactNumber.setFocusable(false);
-        mEmail.setFocusable(false);
+        mRecipient.setFocusableInTouchMode(false);
+        mDistributionLocation.setFocusableInTouchMode(false);
+        mQuantity.setFocusableInTouchMode(false);
+        mNotes.setFocusableInTouchMode(false);
+        mRecipient.setFocusable(false);
+        mDistributionLocation.setFocusable(false);
+        mQuantity.setFocusable(false);
+        mNotes.setFocusable(false);
 
-        mGenderSpinner.setEnabled(false);
-        mBirth.setEnabled(false);
+        mStatusSpinner.setEnabled(false);
+        mDistributionDate.setEnabled(false);
 
         mFabChoosePic.setVisibility(View.INVISIBLE);
 
@@ -515,13 +539,13 @@ public class DonorEditorActivity extends AppCompatActivity {
 
     private void editMode(){
 
-        mName.setFocusableInTouchMode(true);
-        mAddress.setFocusableInTouchMode(true);
-        mContactNumber.setFocusableInTouchMode(true);
-        mEmail.setFocusableInTouchMode(true);
+        mRecipient.setFocusableInTouchMode(true);
+        mDistributionLocation.setFocusableInTouchMode(true);
+        mQuantity.setFocusableInTouchMode(true);
+        mNotes.setFocusableInTouchMode(true);
 
-        mGenderSpinner.setEnabled(true);
-        mBirth.setEnabled(true);
+        mStatusSpinner.setEnabled(true);
+        mDistributionDate.setEnabled(true);
 
         mFabChoosePic.setVisibility(View.VISIBLE);
     }

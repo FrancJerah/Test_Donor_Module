@@ -8,8 +8,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 class ApiClient {
-
-    private static final String BASE_URL = "http://192.168.254.103/db_donation_inventory_system/";
+//change ip address before testing
+    private static final String BASE_URL = "http://172.22.219.107/db_donation_inventory_system/";
     private static Retrofit retrofit;
 
     static Retrofit getApiClient(){

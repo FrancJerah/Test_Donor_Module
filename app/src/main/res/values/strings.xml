@@ -3,5 +3,13 @@
     <string name="gender_unknown">Unknown</string>
     <string name="gender_male">Male</string>
     <string name="gender_female">Female</string>
-    
+
+    <string name="status_rejected">Rejected</string>
+    <string name="status_approved">Approved</string>
+    <string name="status_in_progress">In Progress</string>
+    <string name="status_distributed">Distributed</string>
+    <string name="status_completed">Completed</string>
+    <string name="status_canceled">Canceled</string>
+    <string name="status_pending">Pending</string>
+
 </resources>

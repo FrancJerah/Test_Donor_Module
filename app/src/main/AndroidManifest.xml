@@ -4,6 +4,7 @@
     package="com.group6.donor">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission-sdk-23 android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -38,15 +39,35 @@
             android:label="Inventory Module"
             android:theme="@style/AppTheme"
             android:exported="true">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
+        <activity android:name="com.group6.donor.InventoryEditorActivity"
+            android:theme="@style/EditorTheme">
+        </activity>
+
+        // End of Inventory Module
+
+        // Start of Distribution Module
+        <activity
+            android:name="com.group6.donor.DistributionActivity"
+            android:label="Distribution Module"
+            android:theme="@style/AppTheme"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.group6.donor.InventoryEditorActivity"
+        <activity android:name="com.group6.donor.DistributionEditorActivity"
             android:theme="@style/EditorTheme">
         </activity>
+
+        // End of Distribution Module
 
     </application>
 

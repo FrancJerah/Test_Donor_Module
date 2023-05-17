@@ -52,7 +52,7 @@ public class DonorActivity extends AppCompatActivity{
             public void onRowClick(View view, final int position) {
 
                 Intent intent = new Intent(DonorActivity.this, DonorEditorActivity.class);
-                intent.putExtra("id", donorsClassList.get(position).getDonorID());
+                intent.putExtra("DonorID", donorsClassList.get(position).getDonorID());
                 intent.putExtra("name", donorsClassList.get(position).getName());
                 intent.putExtra("Address", donorsClassList.get(position).getAddress());
                 intent.putExtra("ContactNumber", donorsClassList.get(position).getContactNumber());

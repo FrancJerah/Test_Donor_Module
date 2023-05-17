@@ -90,5 +90,42 @@ public interface ApiInterface {
             @Field("ItemID") int ItemID,
             @Field("picture") String picture);
 
+    // DistributionFields
+
+    @POST("get_distribution.php")
+    Call<List<DistributionClass>> getDistribution();
+
+    @FormUrlEncoded
+    @POST("add_distribution.php")
+    Call<DistributionClass> insertDistribution(
+            @Field("key") String key,
+            @Field("Recipient") String Recipient,
+            @Field("Distribution") String DistributionLocation,
+            @Field("Quantity") String Quantity,
+            @Field("Notes") String Notes,
+            @Field("Status") int Status,
+            @Field("DistributionDate") String DistributionDate,
+            @Field("picture") String picture);
+
+    @FormUrlEncoded
+    @POST("update_distribution.php")
+    Call<DistributionClass> updateDistribution(
+            @Field("key") String key,
+            @Field("DistributionID") int DistributionID,
+            @Field("Recipient") String Recipient,
+            @Field("DistributionLocation") String DistributionLocation,
+            @Field("Quantity") String Quantity,
+            @Field("Notes") String notes,
+            @Field("Status") int Status,
+            @Field("DistributionDate") String DistributionDate,
+            @Field("picture") String picture);
+
+    @FormUrlEncoded
+    @POST("delete_distribution.php")
+    Call<DistributionClass> deleteDistribution(
+            @Field("key") String key,
+            @Field("DistributionID") int DistributionID,
+            @Field("picture") String picture);
+
 
 }
