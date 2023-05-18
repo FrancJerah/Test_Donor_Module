@@ -15,59 +15,45 @@
         android:theme="@style/AppTheme"
         tools:ignore="ExtraText">
 
-        // Donor Module include DonorActivity, and its DonorEditorActivity
         <activity
-            android:name="com.group6.donor.DonorActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme"
             android:exported="true">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+        <!-- Donor Module -->
+        <activity android:name="com.group6.donor.DonorActivity"
+            android:theme="@style/AppTheme"
+            android:exported="true">
         </activity>
         <activity android:name="com.group6.donor.DonorEditorActivity"
             android:theme="@style/EditorTheme">
         </activity>
 
-        // End of Donor Module
-
-        // Start of Inventory Module
-        <activity
-            android:name="com.group6.donor.InventoryActivity"
+        <!-- Inventory Module -->
+        <activity android:name="com.group6.donor.InventoryActivity"
             android:label="Inventory Module"
             android:theme="@style/AppTheme"
             android:exported="true">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
         </activity>
         <activity android:name="com.group6.donor.InventoryEditorActivity"
             android:theme="@style/EditorTheme">
         </activity>
 
-        // End of Inventory Module
-
-        // Start of Distribution Module
-        <activity
-            android:name="com.group6.donor.DistributionActivity"
+        <!-- Distribution Module -->
+        <activity android:name="com.group6.donor.DistributionActivity"
             android:label="Distribution Module"
             android:theme="@style/AppTheme"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name="com.group6.donor.DistributionEditorActivity"
             android:theme="@style/EditorTheme">
         </activity>
-
-        // End of Distribution Module
 
     </application>
 

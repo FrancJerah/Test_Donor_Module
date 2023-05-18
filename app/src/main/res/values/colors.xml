@@ -7,4 +7,6 @@
     <color name="colorPrimaryEditor">#009cfd</color>
     <color name="colorPrimaryDarkEditor">#1284ca</color>
     <color name="colorAccentEditor">#e24000</color>
+
+    <color name="card_background">#ff4800</color>
 </resources>
