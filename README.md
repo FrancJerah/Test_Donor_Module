@@ -2,7 +2,7 @@
 Android Inventory App
 
 # Notice
-[b] - unfinished readme
+**- unfinished readme
 
 
 # Screenshots
