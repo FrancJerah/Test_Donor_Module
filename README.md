@@ -1,5 +1,9 @@
-# MyPets-App
-:cat: Android Pets App
+# Donation Inventory System
+Android Inventory App
 
-# Screenshot
-![Alt text](https://raw.githubusercontent.com/haerulmuttaqin/MyPets-App/master/screenshot-app.png "App Screenshot")
+# Screenshots
+
+# Bugs
+
+# Notice
+- unfinished readme
