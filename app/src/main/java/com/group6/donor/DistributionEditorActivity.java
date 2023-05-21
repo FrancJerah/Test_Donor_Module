@@ -115,7 +115,7 @@ public class DistributionEditorActivity extends AppCompatActivity {
         Recipient = intent.getStringExtra("Recipient");
         DistributionLocation = intent.getStringExtra("DistributionLocation");
         Quantity = intent.getStringExtra("Quantity");
-        DistributionDate = intent.getStringExtra("DistributionLocation");
+        DistributionDate = intent.getStringExtra("DistributionDate");
         picture = intent.getStringExtra("picture");
         Notes = intent.getStringExtra("Notes");
         Status = intent.getIntExtra("Status", 0);

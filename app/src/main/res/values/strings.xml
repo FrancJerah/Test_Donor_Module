@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Donor Module</string>
+    <string name="app_name">Donor Inventory System</string>
     <string name="gender_unknown">Unknown</string>
     <string name="gender_male">Male</string>
     <string name="gender_female">Female</string>

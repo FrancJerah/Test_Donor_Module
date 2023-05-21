@@ -45,11 +45,11 @@ public class DistributionAdapter extends RecyclerView.Adapter<DistributionAdapte
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
 
-        holder.mName.setText(distribution.get(position).getRecipient());
+        holder.mRecipient.setText(distribution.get(position).getRecipient());
         // type in list_item_donor.xml which reveals 2 texts in the list
         holder.mType.setText(distribution.get(position).getQuantity() + " / "
                 + distribution.get(position).getDistributionLocation());
-        holder.mDate.setText(distribution.get(position).getDistributionDate());
+        holder.mDistributionDate.setText(distribution.get(position).getDistributionDate());
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.skipMemoryCache(true);
@@ -88,16 +88,16 @@ public class DistributionAdapter extends RecyclerView.Adapter<DistributionAdapte
         private RecyclerViewClickListener mListener;
         private CircleImageView mPicture;
         private ImageView mLove;
-        private TextView mName, mType, mDate;
+        private TextView mRecipient, mType, mDistributionDate;
         private RelativeLayout mRowContainer;
 
         public MyViewHolder(View itemView, RecyclerViewClickListener listener) {
             super(itemView);
             mPicture = itemView.findViewById(R.id.picture);
-            mName = itemView.findViewById(R.id.Recipient);
+            mRecipient = itemView.findViewById(R.id.Recipient);
             mType = itemView.findViewById(R.id.type);
 //            mLove = itemView.findViewById(R.id.love);
-            mDate = itemView.findViewById(R.id.DistributionDate);
+            mDistributionDate = itemView.findViewById(R.id.DistributionDate);
             mRowContainer = itemView.findViewById(R.id.row_container);
 
             mListener = listener;
@@ -106,6 +106,11 @@ public class DistributionAdapter extends RecyclerView.Adapter<DistributionAdapte
         }
 
         @Override
+//        public void onClick(View v) {
+//            if (v.getId() == R.id.row_container) {
+//                mListener.onRowClick(mRowContainer, getAdapterPosition());
+//            }
+//        }
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.row_container:

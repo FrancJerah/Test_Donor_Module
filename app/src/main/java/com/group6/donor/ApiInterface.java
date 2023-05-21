@@ -7,9 +7,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
-/**
- * Created by haerul on 15/03/18.
- */
+
 
 public interface ApiInterface {
 
@@ -100,7 +98,7 @@ public interface ApiInterface {
     Call<DistributionClass> insertDistribution(
             @Field("key") String key,
             @Field("Recipient") String Recipient,
-            @Field("Distribution") String DistributionLocation,
+            @Field("DistributionLocation") String DistributionLocation,
             @Field("Quantity") String Quantity,
             @Field("Notes") String Notes,
             @Field("Status") int Status,
@@ -115,7 +113,7 @@ public interface ApiInterface {
             @Field("Recipient") String Recipient,
             @Field("DistributionLocation") String DistributionLocation,
             @Field("Quantity") String Quantity,
-            @Field("Notes") String notes,
+            @Field("Notes") String Notes,
             @Field("Status") int Status,
             @Field("DistributionDate") String DistributionDate,
             @Field("picture") String picture);
