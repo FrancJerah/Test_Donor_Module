@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 18, 2023 at 03:45 AM
+-- Generation Time: May 24, 2023 at 11:06 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -29,12 +29,12 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `tbl_distribution` (
   `DistributionID` int(11) NOT NULL,
-  `DonorID` int(11) NOT NULL,
-  `ItemID` int(11) NOT NULL,
+  `DonorID` int(11) DEFAULT NULL,
+  `ItemID` int(11) DEFAULT NULL,
   `Recipient` text NOT NULL,
   `DistributionDate` date NOT NULL,
   `Quantity` int(11) NOT NULL,
-  `Notes` text NOT NULL,
+  `Notes` text DEFAULT NULL,
   `DistributionLocation` text NOT NULL,
   `Status` int(1) NOT NULL,
   `picture` int(100) NOT NULL
@@ -45,7 +45,7 @@ CREATE TABLE `tbl_distribution` (
 --
 
 INSERT INTO `tbl_distribution` (`DistributionID`, `DonorID`, `ItemID`, `Recipient`, `DistributionDate`, `Quantity`, `Notes`, `DistributionLocation`, `Status`, `picture`) VALUES
-(0, 0, 0, 'Juan Dela Cruz', '0000-00-00', 1, 'ok', '', 0, 0);
+(0, NULL, NULL, 'IBARRA', '2023-01-02', 2, 'N/A', 'BACOLOD CITY', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -76,7 +76,8 @@ INSERT INTO `tbl_donors` (`DonorID`, `name`, `Address`, `ContactNumber`, `gender
 (7, 'Cardo Dalisay', 'South Homes, Sum-ag, Bacolod City', '09123345678', 1, '1994-05-05', 'false', 'http://192.168.1.103/demo_pets/pets_picture/pet_logo.png', NULL),
 (8, 'Example', 'Example', '09123456789', 2, '2023-05-15', 'false', 'http://192.168.1.103/demo_pets/pets_picture/pet_logo.png', 'example@yahoo.com'),
 (9, 'Example2', 'Example2', '09454545454', 2, '2023-05-16', 'false', 'http://172.22.69.14/db_donation_inventory_system/pets_picture/pet_logo.png', 'example2@email.com'),
-(10, 'Example3', 'Example3', '0945678910', 2, '2023-05-01', 'false', 'http://172.22.69.14/db_donation_inventory_system/pets_picture/pet_logo.png', 'example3@email.com');
+(10, 'Example3', 'Example3', '0945678910', 2, '2023-05-01', 'false', 'http://172.22.69.14/db_donation_inventory_system/pets_picture/pet_logo.png', 'example3@email.com'),
+(11, 'DD', 'BC', '09455666074', 1, '2023-05-01', 'false', 'http://172.22.69.14/db_donation_inventory_system/pets_picture/pet_logo.png', 'D@GMAIL.COM');
 
 -- --------------------------------------------------------
 
@@ -132,7 +133,7 @@ ALTER TABLE `tbl_inventory`
 -- AUTO_INCREMENT for table `tbl_donors`
 --
 ALTER TABLE `tbl_donors`
-  MODIFY `DonorID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `DonorID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `tbl_inventory`
