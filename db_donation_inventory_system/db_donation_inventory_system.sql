@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 15, 2023 at 03:55 PM
+-- Generation Time: May 18, 2023 at 03:45 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -20,6 +20,32 @@ SET time_zone = "+00:00";
 --
 -- Database: `db_donation_inventory_system`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_distribution`
+--
+
+CREATE TABLE `tbl_distribution` (
+  `DistributionID` int(11) NOT NULL,
+  `DonorID` int(11) NOT NULL,
+  `ItemID` int(11) NOT NULL,
+  `Recipient` text NOT NULL,
+  `DistributionDate` date NOT NULL,
+  `Quantity` int(11) NOT NULL,
+  `Notes` text NOT NULL,
+  `DistributionLocation` text NOT NULL,
+  `Status` int(1) NOT NULL,
+  `picture` int(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_distribution`
+--
+
+INSERT INTO `tbl_distribution` (`DistributionID`, `DonorID`, `ItemID`, `Recipient`, `DistributionDate`, `Quantity`, `Notes`, `DistributionLocation`, `Status`, `picture`) VALUES
+(0, 0, 0, 'Juan Dela Cruz', '0000-00-00', 1, 'ok', '', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -77,6 +103,14 @@ INSERT INTO `tbl_inventory` (`ItemID`, `ItemName`, `Quantity`, `Description`, `p
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `tbl_distribution`
+--
+ALTER TABLE `tbl_distribution`
+  ADD PRIMARY KEY (`DistributionID`),
+  ADD KEY `DonorID` (`DonorID`),
+  ADD KEY `ItemID` (`ItemID`);
 
 --
 -- Indexes for table `tbl_donors`

@@ -43,7 +43,7 @@ if ( $key == "update" ){
                 $path = "pets_picture/$DonorID.jpeg";
                 $finalPath = "/demo_pets/".$path;
 
-                $insert_picture = "UPDATE pets SET picture='$finalPath' WHERE DonorID='$DonorID' ";
+                $insert_picture = "UPDATE tbl_donors SET picture='$finalPath' WHERE DonorID='$DonorID' ";
             
                 if (mysqli_query($conn, $insert_picture)) {
             
