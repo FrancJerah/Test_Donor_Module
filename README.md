@@ -6,7 +6,7 @@ Adopted from the previous Capstone Project: <b>ULIKID BACOLOD: BACOLOD CITY DONA
 3. Distribution Module
 
 # Bugs Notice
-- Deleting and Editing an Item from the Distribution Module 
+- Deleting and Editing an Item from the Distribution Module does not fetch data correctly, and redirects to user to instead add an item 
 
 # Screenshots
 
